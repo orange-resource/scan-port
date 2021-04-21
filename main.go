@@ -216,7 +216,7 @@ func main() {
 
 	giteeUrl, _ := url.Parse("https://gitee.com/orange-resource/scan-port")
 	githubUrl, _ := url.Parse("https://github.com/orange-resource/scan-port")
-	downloadUrl, _ := url.Parse("https://gitee.com/orange-resource/scan-port")
+	downloadUrl, _ := url.Parse("https://gitee.com/orange-resource/scan-port/releases")
 	softInfoVBox := container.NewVBox(
 		fontForm,
 		widget.NewLabel("软件作者: 橘子"),
