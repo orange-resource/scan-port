@@ -19,8 +19,9 @@ import (
 
 var basePath string
 var configPath string
-
 var portListData = []string{}
+
+var workState bool = false
 
 // 初始化软件配置
 func initSoftConfig(config *Config) {
@@ -151,25 +152,37 @@ func main() {
 			return
 		}
 
-		scanTipLabel.SetText("正在扫描中...")
-		portListData = []string{}
+		if workState {
+			dialog.ShowInformation("info", "正在扫描中...", w)
+			return
+		}
 
-		portInfos := make(chan ip.PortInfo, portGap+1)
-		ip.ScanPort(portInfos, ipInput.Text, startPort, endPort)
-		notAvailablePort := 0
-		for i := 0; i < (portGap + 1); i++ {
-			portInfo := <-portInfos
-			if !portInfo.Available {
-				notAvailablePort += 1
-				portListData = append(portListData, portInfo.Ip+":"+strconv.Itoa(portInfo.Port))
+		go func() {
+			workState = true
+
+			scanTipLabel.SetText("正在扫描中...")
+			portListData = []string{}
+
+			portInfos := make(chan ip.PortInfo, portGap+1)
+			go ip.ScanPort(portInfos, ipInput.Text, startPort, endPort)
+			notAvailablePort := 0
+			for i := 0; i < (portGap + 1); i++ {
+				portInfo := <-portInfos
+				if !portInfo.Available {
+					notAvailablePort += 1
+					portListData = append(portListData, portInfo.Ip+":"+strconv.Itoa(portInfo.Port))
+					portList.Refresh()
+				}
 			}
-		}
 
-		if notAvailablePort > 0 {
-			scanTipLabel.SetText("扫描完毕, 已发现 " + strconv.Itoa(notAvailablePort) + " 个占用端口...")
-		} else {
-			scanTipLabel.SetText("扫描完毕, 未发现被占用的端口...")
-		}
+			if notAvailablePort > 0 {
+				scanTipLabel.SetText("扫描完毕, 已发现 " + strconv.Itoa(notAvailablePort) + " 个占用端口...")
+			} else {
+				scanTipLabel.SetText("扫描完毕, 未发现被占用的端口...")
+			}
+
+			workState = false
+		}()
 	})
 
 	ipInput.SetText(ipv4)

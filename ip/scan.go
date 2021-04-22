@@ -7,8 +7,11 @@ import (
 	"runtime"
 	"strconv"
 	"strings"
+	"sync/atomic"
 	"time"
 )
+
+var workCount int64
 
 type PortInfo struct {
 	Ip        string
@@ -17,18 +20,44 @@ type PortInfo struct {
 }
 
 func ScanPort(result chan PortInfo, ip string, startPort int, endPort int) {
-	for i := startPort; i <= endPort; i++ {
-		go scan(result, ip, i)
+	println("scan port: ", ip, startPort, endPort)
+
+	//for i := startPort; i <= endPort; i++ {
+	//	go scan(result, ip, i)
+	//}
+
+	var limit int64 = 1000
+	if runtime.GOOS != "windows" {
+		limit = 50
+	}
+
+	println("limit: ", limit)
+
+	workCount = 0
+	i := startPort
+	for {
+		wc := atomic.LoadInt64(&workCount)
+		if wc < limit {
+			atomic.AddInt64(&workCount, 1)
+			go scan(result, ip, i)
+			i += 1
+		} else {
+			time.Sleep(10)
+		}
+		if i > endPort {
+			break
+		}
 	}
 }
 
 func scan(result chan PortInfo, ip string, port int) {
-	con, err := net.DialTimeout("tcp", ip+":"+strconv.Itoa(port), 60*time.Second)
+	con, err := net.DialTimeout("tcp", ip+":"+strconv.Itoa(port), 15*time.Second)
 	var available bool
 	if err != nil {
+		fmt.Println(err)
 		available = true
 	} else {
-		defer con.Close()
+		con.Close()
 		available = false
 	}
 	result <- PortInfo{
@@ -36,6 +65,7 @@ func scan(result chan PortInfo, ip string, port int) {
 		Port:      port,
 		Available: available,
 	}
+	atomic.AddInt64(&workCount, -1)
 }
 
 func FindProcess(port int) []string {
