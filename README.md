@@ -17,7 +17,7 @@
 <p align="center"> 
     基于Go开发的多协程快速扫描占用端口, 一键关闭端口对应进程
     <br>
-    跨平台开源GUI软件, 支持Windows10, MacOs
+    跨平台开源GUI软件, 支持Windows10, MacOS
     <br> 
 </p>
 
@@ -42,7 +42,7 @@ MacOS用户下载好，拖入到应用程序里面即可使用
 
 ## ⛏️ 软件使用框架
 
-- [Fyne](https://github.com/fyne-io/fyne) - 软件UI框架
+- [fyne](https://github.com/fyne-io/fyne) - 软件UI框架
 - [ini](https://github.com/go-ini/ini) - ini配置文件处理框架
 - [@软件图标](https://www.iconfont.cn/user/detail?spm=a313x.7781069.0.d214f71f6&uid=5869166) - 软件icon来源 - 作者: 神下无言
 
