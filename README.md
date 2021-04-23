@@ -36,9 +36,11 @@ MacOS默认指向黑体, Windows则为微软雅黑
 
 ## 🎈 使用
 
-Windows用户直接下载好，直接就能打开使用
+Windows用户直接下载完解压好打开使用即可
 
 MacOS用户下载好，拖入到应用程序里面即可使用
+
+- [B站演示视频](https://www.bilibili.com/video/BV1R54y1L75S?share_source=copy_web) - B站演示视频
 
 ## ⛏️ 软件使用框架
 
