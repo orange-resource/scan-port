@@ -35,12 +35,13 @@ MacOS默认指向黑体, Windows则为微软雅黑
 [![](https://ongsat.oss-cn-hangzhou.aliyuncs.com/opensource/ScanPort/font.png)]()
 
 ## 🎈 使用
+[下载地址](https://gitee.com/orange-resource/scan-port/releases) - 软件下载地址
 
 Windows用户直接下载完解压好打开使用即可
 
 MacOS用户下载好，拖入到应用程序里面即可使用
 
-- [B站演示视频](https://www.bilibili.com/video/BV1R54y1L75S?share_source=copy_web) - B站演示视频
+[B站演示视频](https://www.bilibili.com/video/BV1R54y1L75S?share_source=copy_web) - B站演示视频
 
 ## ⛏️ 软件使用框架
 
